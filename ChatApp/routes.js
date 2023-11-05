@@ -1,7 +1,8 @@
-const http = require("http");
 const fs = require("fs");
+
 let message = "";
-const server = http.createServer((req, res) => {
+
+const requestHandler = (req, res) => {
   console.log(req.url, req.method, req.headers);
   if (req.url === "/") {
     res.setHeader("Content-Type", "text/html");
@@ -40,5 +41,14 @@ const server = http.createServer((req, res) => {
   res.write("</body>");
   res.write("</html>");
   res.end();
-});
-server.listen(4000);
+};
+
+// module.exports = requestHandler;
+
+// module.exports = {
+//   handler: requestHandler,
+//   codeText: "Some code Text",
+// };
+
+exports.requestHandler = requestHandler;
+exports.someText = "Some Code Text";
