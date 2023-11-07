@@ -1,5 +1,4 @@
 const express = require("express");
-const store = require("store2");
 const fs = require("fs");
 
 const router = express.Router();
@@ -9,36 +8,29 @@ router.use(express.urlencoded({ extended: true }));
 
 const data = [];
 
-if (!store.has("userName")) {
-  router.get("/", (req, res, next) => {
-    res.send(
-      '<form action="/app" method="POST"><input type="text" name="userName" /><button>Login</button></form>'
-    );
-  });
-
-  router.post("/app", (req, res, next) => {
-    store.set("userName", req.body.userName);
-    res.redirect("/chat");
-  });
-}
-
-router.get("/chat", (req, res, next) => {
-  if (store.get("userName") === null) {
-    res.redirect("/");
-  }
+router.get("/", (req, res, next) => {
   res.send(
-    `<p>${fs.readFileSync("./Group_Chat_App/User.txt", (err) => {
-      if (err) {
-        console.log(err);
-      }
-    })}</p>` +
-      '<form action="/chat" method="POST"><input type="text" name="data" /><button>Send</button></form>'
+    '<form action="/app" onSubmit="localStorage.setItem(`userName`,document.getElementById(`userName`).value)" method="POST"><input type="text" id="userName" name="userName" /><button>Login</button></form>'
   );
 });
 
+router.post("/app", (req, res, next) => {
+  fs.writeFile("./Group_Chat_App/User.txt", "", (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+  res.redirect("/chat");
+});
+
+router.get("/chat", (req, res, next) => {
+  res.send(
+    `<p>${fs.readFileSync("./Group_Chat_App/User.txt")}</p>` +
+      '<form onSubmit="document.getElementById(`chat1`).value=localStorage.getItem(`userName`)" action="/chat" method="POST"><input type="text" id="chat" name="data" /><input type="hidden" id="chat1" name="userName" /><button>Send</button></form>'
+  );
+});
 router.post("/chat", (req, res, next) => {
-  const admin = req.body;
-  data.push(store.get("userName") + ":" + admin.data);
+  data.push(req.body.userName + ": " + req.body.data);
   fs.writeFile("./Group_Chat_App/User.txt", data.join("\n"), (err) => {
     if (err) {
       console.error(err);
