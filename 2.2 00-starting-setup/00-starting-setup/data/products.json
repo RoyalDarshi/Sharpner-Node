@@ -1,1 +1,16 @@
-[{"id":"332439","title":"A Book","imageUrl":"https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg","description":"This is an awesome book!","price":"19"},{"title":"Glass","imageUrl":"https://leambrosie.files.wordpress.com/2013/08/shutterstock_131303366.jpg","description":"The glass which can be used as drinking water as well as wine.","price":"12.65","id":"0.9098606249256198"}]
+[
+  {
+    "id": "332439",
+    "title": "A Book  ",
+    "imageUrl": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg  ",
+    "description": "This is an awesome book!  as well as great.",
+    "price": "15"
+  },
+  {
+    "title": "Glass",
+    "imageUrl": "https://leambrosie.files.wordpress.com/2013/08/shutterstock_131303366.jpg",
+    "description": "The glass which can be used as drinking water as well as wine.",
+    "price": "12.65",
+    "id": "0.9098606249256198"
+  }
+]
