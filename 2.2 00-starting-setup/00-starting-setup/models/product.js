@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const db = require("../util/database");
+
 const p = path.join(
   path.dirname(process.mainModule.filename),
   "data",
@@ -27,55 +29,21 @@ module.exports = class Product {
   }
 
   save() {
-    if (this.id) {
-      getProductsFromFile((product) => {
-        const updatedProdIndex = product.findIndex(
-          (prod) => prod.id === this.id
-        );
-        const updatedProduct = [...product];
-        updatedProduct[updatedProdIndex] = this;
-        fs.writeFile(p, JSON.stringify(updatedProduct), (err) => {
-          if (err) {
-            console.log(err);
-          }
-        });
-      });
-    } else {
-      this.id = Math.random().toString();
-      getProductsFromFile((products) => {
-        products.push(this);
-        fs.writeFile(p, JSON.stringify(products), (err) => {
-          console.log(err);
-        });
-      });
-    }
+    return db.execute(
+      "INSERT INTO products(title,price,description,imageUrl) VALUES (?,?,?,?)",
+      [this.title, this.price, this.description, this.imageUrl]
+    );
   }
 
   static fetchAll(cb) {
-    getProductsFromFile(cb);
+    return db.execute("SELECT * FROM products");
   }
 
-  static findById(id, cb) {
-    getProductsFromFile((products) => {
-      const product = products.find((p) => p.id === id);
-      cb(product);
-    });
+  static findById(id) {
+    return db.execute("SELECT * FROM products WHERE id=?", [id]);
   }
 
-  static deleteById(id, cb) {
-    getProductsFromFile((product) => {
-      const deletedProdIndex = product.findIndex((prod) => prod.id === id);
-      const newProd = [];
-      for (let index = 0; index < product.length; index++) {
-        if (index != deletedProdIndex) {
-          newProd.push(product[index]);
-        }
-      }
-      fs.writeFile(p, JSON.stringify(newProd), (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    });
+  static deleteById(id) {
+    return db.execute("DELETE FROM products WHERE id=?", [id]);
   }
 };

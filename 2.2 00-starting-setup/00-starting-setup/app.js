@@ -14,10 +14,6 @@ app.set("views", "views");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
-const queryData = db.execute(
-  "CREATE TABLE student (sid int,sname VARCHAR(24), sadd VARCHAR(24))"
-);
-console.log(queryData);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
