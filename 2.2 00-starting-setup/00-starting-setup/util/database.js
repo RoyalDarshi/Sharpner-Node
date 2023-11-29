@@ -1,8 +1,8 @@
-const Sequelizer = require("sequelize");
+const Sequelize = require("sequelize");
 
-const sequelizer = new Sequelizer("node-complete", "root", "root", {
+const sequelize = new Sequelize("node-complete", "root", "root", {
   dialect: "mysql",
   host: "localhost",
 });
 
-module.exports = sequelizer;
+module.exports = sequelize;
